@@ -45,6 +45,7 @@ Fecha de este estado: 5 de octubre de 2026.
 | Revocar, y que no se pueda volver | En esa misma prueba y en las pruebas del servicio |
 | Pairing ID caducado, reutilizado, incorrecto; rechazo; saltarse la confirmación; repetición de mensajes; pérdida de red; reinicio; dos Hermes con el mismo ID; ID filtrado después de usarse | Pruebas automáticas del servicio y del conector por sockets reales en la misma máquina |
 | El conector dentro de Hermes | Cargado por el sistema de plugins de Hermes: registra sus herramientas, la orden `/dotpulse` y esta Skill |
+| Instalar esta Skill desde GitHub | Con la orden de Hermes, en una instalación limpia (ver [Instalación de la Skill](#instalación-de-la-skill)) |
 
 Versiones: Hermes Agent 0.21.2 (Python 3.11) en macOS; la app compilada para iOS 26.6 e instalada
 en un iPhone 17 Pro Max.
@@ -139,9 +140,21 @@ nada más.
 hermes skills install https://raw.githubusercontent.com/1122RealEstate/SkillDotPulse/main/SKILL.md
 ```
 
-La forma corta `1122RealEstate/SkillDotPulse` no sirve: Hermes solo acepta así las Skills que están
-en una subcarpeta de un repositorio. Hermes trata esta Skill como «de la comunidad»: la analiza
-antes de instalarla y pide confirmación.
+Probado con Hermes 0.21.2 el 5 de octubre de 2026. Hermes la descarga, la analiza como Skill «de la
+comunidad» y la instala con el nombre `dotpulse`. Esto fue lo que respondió:
+
+```
+Running security scan...
+Scan: dotpulse (…/SKILL.md/community)  Verdict: SAFE
+Decision: ALLOWED — Allowed (community source, safe verdict)
+Installed: dotpulse
+Files: SKILL.md, examples/pairing-example.md, references/dotpulse.md,
+references/pairing.md, references/protocol.md, references/security.md
+```
+
+Sin `--yes`, Hermes pide confirmación antes de instalar. La forma corta
+`1122RealEstate/SkillDotPulse` no sirve: Hermes solo acepta así las Skills que están en una
+subcarpeta de un repositorio.
 
 Instalada así, la Skill no aparece en la lista del agente hasta que el conector está instalado,
 porque declara que necesita la herramienta `dotpulse_pair`. Es lo esperado: sin conector no hay
