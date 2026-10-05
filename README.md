@@ -109,13 +109,17 @@ con el servicio de conexión, y el [conector instalado](#instalar-el-conector) e
    > Si tu propio DotPulse no está mostrando este código ahora mismo, no confirmes: alguien está
    > intentando conectar su teléfono a tu Hermes.
 
-8. **En DotPulse.** Se abre «Autorizar conexión» con el nombre del Hermes que lo pide, dónde se
-   pegó (Hermes o Telegram), la hora, el **código de verificación** y los botones **Autorizar** y
-   **Rechazar**. Comprueba que el código es el mismo y pulsa **Autorizar**.
+8. **En DotPulse.** Al copiar se abre una pantalla con tu Dot que te acompaña todo el camino:
+   «Conexión copiada», «Esperando a Hermes…» con el tiempo que queda, y, cuando Hermes presenta
+   la conexión, «Hermes quiere conectarse» con su nombre, dónde se pegó (Hermes o Telegram), la
+   hora y el **código de verificación**. Comprueba que el código es el mismo y pulsa
+   **Autorizar** (o **Rechazar**). La pantalla pasa a «Conectando con Hermes…»: todavía no está
+   conectado.
 9. **En Hermes.** Escribe `/dotpulse confirmar`. Hermes responde «Confirmado aquí…». Da igual cuál
    de las dos confirmaciones des primero; sin las dos no se conecta nada.
-10. **Cómo saber que está conectado.** En DotPulse, pestaña Conexiones: ese Hermes aparece
-    *En línea*. En Hermes, `/dotpulse` lo lista así:
+10. **Cómo saber que está conectado.** La pantalla de DotPulse muestra «Hermes conectado» solo
+    cuando el servicio lo confirma, y ofrece **Ver agentes**. En la pestaña Conexiones ese Hermes
+    aparece *En línea*. En Hermes, `/dotpulse` lo lista así:
 
     ```
     • iPhone de Ana — 64e9ecc2f11a — conectado, en línea — capacidades: hermes.api
