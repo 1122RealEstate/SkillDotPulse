@@ -1,0 +1,146 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 420" width="1200" height="420" role="img" aria-labelledby="title desc">
+  <title id="title">DotPulse Skill</title>
+  <desc id="desc">Un Dot de DotPulse con auriculares, rodeado de puntos que orbitan y anillos que pulsan, junto al texto: DotPulse Skill. Conecta Hermes con DotPulse usando solo un Pairing ID temporal.</desc>
+
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#08081C"/>
+      <stop offset="0.55" stop-color="#140F3C"/>
+      <stop offset="1" stop-color="#2B1466"/>
+    </linearGradient>
+    <radialGradient id="halo" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#6C5CFF" stop-opacity="0.55"/>
+      <stop offset="0.6" stop-color="#6C5CFF" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#6C5CFF" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="body" cx="0.38" cy="0.3" r="0.85">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="0.6" stop-color="#EEECFF"/>
+      <stop offset="1" stop-color="#C9C3FF"/>
+    </radialGradient>
+    <linearGradient id="brand" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#39D0FF"/>
+      <stop offset="0.5" stop-color="#8B7BFF"/>
+      <stop offset="1" stop-color="#E05BFF"/>
+    </linearGradient>
+    <pattern id="grid" width="28" height="28" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.3" fill="#FFFFFF" opacity="0.07"/>
+    </pattern>
+    <clipPath id="card"><rect width="1200" height="420" rx="32"/></clipPath>
+    <clipPath id="front"><rect x="-260" y="0" width="520" height="140"/></clipPath>
+  </defs>
+
+  <style>
+    .sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+    .ring { transform-box: fill-box; transform-origin: center; animation: ring 3.9s cubic-bezier(.2,.6,.3,1) infinite; }
+    .ring.b { animation-delay: 1.3s; }
+    .ring.c { animation-delay: 2.6s; }
+    .bob { animation: bob 4.6s ease-in-out infinite; }
+    .eye { transform-box: fill-box; transform-origin: center; animation: blink 5.2s infinite; }
+    .led { animation: led 2.6s ease-in-out infinite; }
+    @keyframes ring { 0% { transform: scale(.5); opacity: .6; } 100% { transform: scale(1.55); opacity: 0; } }
+    @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
+    @keyframes blink { 0%, 45%, 49%, 100% { transform: scaleY(1); } 47% { transform: scaleY(.08); } }
+    @keyframes led { 0%, 100% { opacity: .45; } 50% { opacity: 1; } }
+    @media (prefers-reduced-motion: reduce) { .ring, .bob, .eye, .led { animation: none; } }
+  </style>
+
+  <g clip-path="url(#card)">
+    <rect width="1200" height="420" fill="url(#bg)"/>
+    <rect width="1200" height="420" fill="url(#grid)"/>
+    <circle cx="935" cy="212" r="300" fill="url(#halo)"/>
+
+    <!-- Texto -->
+    <g class="sans">
+      <rect x="72" y="74" width="212" height="34" rx="17" fill="#FFFFFF" fill-opacity="0.07" stroke="#FFFFFF" stroke-opacity="0.16"/>
+      <circle class="led" cx="92" cy="91" r="5" fill="#39D0FF"/>
+      <text x="106" y="96" font-size="13" font-weight="700" letter-spacing="1.6" fill="#D9D6FF">SKILL OFICIAL · HERMES</text>
+
+      <text x="70" y="190" font-size="74" font-weight="800" letter-spacing="-2" fill="#FFFFFF">DotPulse <tspan fill="url(#brand)">Skill</tspan></text>
+
+      <text x="74" y="244" font-size="23" fill="#BDB9EE">Conecta Hermes con DotPulse usando solo un</text>
+      <text x="74" y="276" font-size="23" fill="#BDB9EE">Pairing ID temporal generado en tu teléfono.</text>
+
+      <g transform="translate(74 318)">
+        <rect width="428" height="42" rx="21" fill="#0B0B22" fill-opacity="0.6" stroke="url(#brand)" stroke-opacity="0.7"/>
+        <g transform="translate(22 11)" fill="none" stroke="#39D0FF" stroke-width="2" stroke-linecap="round">
+          <rect x="0" y="8" width="16" height="12" rx="3"/>
+          <path d="M3.5 8V5.5a4.5 4.5 0 0 1 9 0V8"/>
+        </g>
+        <text x="50" y="27" font-size="16" font-weight="600" fill="#F2F1FF">Sin Pairing ID válido, la Skill no hace nada.</text>
+      </g>
+    </g>
+
+    <!-- Dot -->
+    <g transform="translate(935 212)">
+      <circle class="ring" r="150" fill="none" stroke="#39D0FF" stroke-width="2"/>
+      <circle class="ring b" r="150" fill="none" stroke="#8B7BFF" stroke-width="2"/>
+      <circle class="ring c" r="150" fill="none" stroke="#E05BFF" stroke-width="2"/>
+
+      <!-- órbitas: mitad trasera -->
+      <g transform="rotate(-16)">
+        <ellipse rx="200" ry="64" fill="none" stroke="#FFFFFF" stroke-opacity="0.13"/>
+        <circle r="7.5" fill="#39D0FF">
+          <animateMotion dur="9s" repeatCount="indefinite" path="M-200,0 a200,64 0 1,0 400,0 a200,64 0 1,0 -400,0"/>
+        </circle>
+      </g>
+      <g transform="rotate(24)">
+        <ellipse rx="152" ry="46" fill="none" stroke="#FFFFFF" stroke-opacity="0.10"/>
+        <circle r="5.5" fill="#E05BFF">
+          <animateMotion dur="6.5s" repeatCount="indefinite" path="M152,0 a152,46 0 1,0 -304,0 a152,46 0 1,0 304,0"/>
+        </circle>
+      </g>
+      <g transform="rotate(5)">
+        <ellipse rx="236" ry="90" fill="none" stroke="#FFFFFF" stroke-opacity="0.08"/>
+        <circle r="4.5" fill="#FFFFFF">
+          <animateMotion dur="14s" repeatCount="indefinite" path="M-236,0 a236,90 0 1,0 472,0 a236,90 0 1,0 -472,0"/>
+        </circle>
+      </g>
+
+      <g class="bob">
+        <!-- cuerpo -->
+        <circle r="80" fill="url(#body)"/>
+        <circle r="80" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-dasharray="1.5 6" stroke-linecap="round" opacity="0.55"/>
+
+        <!-- auriculares -->
+        <path d="M-83,-12 A84,84 0 0 1 83,-12" fill="none" stroke="#17184A" stroke-width="9" stroke-linecap="round"/>
+        <rect x="-101" y="-30" width="26" height="54" rx="13" fill="#17184A"/>
+        <rect x="75" y="-30" width="26" height="54" rx="13" fill="#17184A"/>
+        <rect class="led" x="-97" y="-21" width="5" height="36" rx="2.5" fill="#39D0FF"/>
+        <rect class="led" x="92" y="-21" width="5" height="36" rx="2.5" fill="#E05BFF"/>
+
+        <!-- cara -->
+        <g class="eye">
+          <ellipse cx="-26" cy="-2" rx="12" ry="15" fill="#151A5C"/>
+          <circle cx="-30" cy="-8" r="4.6" fill="#FFFFFF"/>
+          <circle cx="-22" cy="4" r="2" fill="#7FB6FF"/>
+        </g>
+        <g class="eye">
+          <ellipse cx="26" cy="-2" rx="12" ry="15" fill="#151A5C"/>
+          <circle cx="22" cy="-8" r="4.6" fill="#FFFFFF"/>
+          <circle cx="30" cy="4" r="2" fill="#7FB6FF"/>
+        </g>
+        <ellipse cx="-46" cy="22" rx="11" ry="6.5" fill="#FF8FB8" opacity="0.55"/>
+        <ellipse cx="46" cy="22" rx="11" ry="6.5" fill="#FF8FB8" opacity="0.55"/>
+        <path d="M-10,20 Q0,33 10,20 Z" fill="#E8456F" stroke="#151A5C" stroke-width="2.5" stroke-linejoin="round"/>
+      </g>
+
+      <!-- órbitas: mitad delantera -->
+      <g transform="rotate(-16)" clip-path="url(#front)">
+        <circle r="7.5" fill="#39D0FF">
+          <animateMotion dur="9s" repeatCount="indefinite" path="M-200,0 a200,64 0 1,0 400,0 a200,64 0 1,0 -400,0"/>
+        </circle>
+      </g>
+      <g transform="rotate(24)" clip-path="url(#front)">
+        <circle r="5.5" fill="#E05BFF">
+          <animateMotion dur="6.5s" repeatCount="indefinite" path="M152,0 a152,46 0 1,0 -304,0 a152,46 0 1,0 304,0"/>
+        </circle>
+      </g>
+      <g transform="rotate(5)" clip-path="url(#front)">
+        <circle r="4.5" fill="#FFFFFF">
+          <animateMotion dur="14s" repeatCount="indefinite" path="M-236,0 a236,90 0 1,0 472,0 a236,90 0 1,0 -472,0"/>
+        </circle>
+      </g>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 132" width="520" height="132" role="img" aria-labelledby="title">
+  <title id="title">DotPulse Skill</title>
+
+  <defs>
+    <linearGradient id="tile" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2B6BFF"/>
+      <stop offset="0.5" stop-color="#6C5CFF"/>
+      <stop offset="1" stop-color="#C04BFF"/>
+    </linearGradient>
+    <linearGradient id="word" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#4F6BFF"/>
+      <stop offset="1" stop-color="#A855F7"/>
+    </linearGradient>
+    <radialGradient id="body" cx="0.38" cy="0.3" r="0.85">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="0.6" stop-color="#EEECFF"/>
+      <stop offset="1" stop-color="#CFC9FF"/>
+    </radialGradient>
+  </defs>
+
+  <!-- marca -->
+  <g transform="translate(10 10)">
+    <rect width="112" height="112" rx="28" fill="url(#tile)"/>
+    <g transform="translate(56 58)">
+      <circle r="44" fill="none" stroke="#FFFFFF" stroke-opacity="0.28" stroke-width="2"/>
+      <circle r="32" fill="url(#body)"/>
+      <ellipse cx="-11" cy="-2" rx="5.2" ry="6.6" fill="#151A5C"/>
+      <ellipse cx="11" cy="-2" rx="5.2" ry="6.6" fill="#151A5C"/>
+      <circle cx="-12.6" cy="-4.6" r="1.9" fill="#FFFFFF"/>
+      <circle cx="9.4" cy="-4.6" r="1.9" fill="#FFFFFF"/>
+      <path d="M-5,9 Q0,15 5,9" fill="none" stroke="#151A5C" stroke-width="2.4" stroke-linecap="round"/>
+      <circle cx="31" cy="-31" r="5" fill="#39D0FF"/>
+      <circle cx="-38" cy="22" r="3.4" fill="#FFFFFF" fill-opacity="0.9"/>
+    </g>
+  </g>
+
+  <!-- nombre -->
+  <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+    <text x="146" y="78" font-size="60" font-weight="800" letter-spacing="-1.5" fill="url(#word)">DotPulse</text>
+    <rect x="148" y="94" width="70" height="26" rx="13" fill="none" stroke="#8B7BFF" stroke-width="1.6"/>
+    <text x="183" y="112" font-size="13" font-weight="700" letter-spacing="2.4" text-anchor="middle" fill="#8B7BFF">SKILL</text>
+  </g>
+</svg>
