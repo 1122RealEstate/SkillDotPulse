@@ -17,7 +17,7 @@ DotPulse never issues.
 
 ```
 [tool] dotpulse_status()
-       → connector: reachable: true · compatible: true · version: "0.4.0"
+       → connector: reachable: true · compatible: true · version: "0.4.2"
 [tool] dotpulse_pair(text = the message, unchanged)
        → state: pending · device: "iPhone de Ana" · verification_code: "123 456" · request: "…"
 ```
