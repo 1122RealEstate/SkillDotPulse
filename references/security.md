@@ -63,6 +63,17 @@ message reaches the model; pasted straight into Hermes, the model does see it.
 | Lost phone | The owner revokes the connection from Hermes (`/dotpulse`, or asking the agent) |
 | Lost Hermes machine | The owner revokes the connection from the app |
 
+## Three different things
+
+| | What it is | Where it lives | How long |
+|---|---|---|---|
+| Pairing ID | An introduction | The app's memory and the clipboard | 5 minutes, one use |
+| Device key | Who this installation of DotPulse is | The phone's Secure Enclave; the service has only the public half | While the app is installed |
+| Link credential | What one Hermes was allowed | A private file on that Hermes | Until revoked |
+
+No identifier of the phone itself (IMEI, serial, Apple identifier) is used or copied. The
+installation id is a random number the app makes.
+
 ## The two confirmations
 
 | Where | Who gives it | What it protects |

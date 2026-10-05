@@ -190,8 +190,8 @@ comunidad», la da por segura (`Verdict: SAFE`) y la instala con el nombre `dotp
 `1122RealEstate/SkillDotPulse` no sirve: Hermes solo acepta así las Skills que están en una
 subcarpeta.
 
-Instalada así, la Skill no aparece en la lista del agente hasta que el conector está instalado,
-porque declara que necesita la herramienta `dotpulse_pair`. Sin conector no hay nada que pueda hacer.
+Instalada así y sin el conector, la Skill solo sirve para una cosa: que Hermes te diga que hace
+falta instalar el conector oficial una vez, sin gastar el Pairing ID que pegaste.
 
 ## Administrar conexiones
 
@@ -245,6 +245,20 @@ agente o una conexión, sale de sus grupos.
 
 En los dos casos se corta en el momento, Hermes destruye su credencial y no reintenta. Solo se
 vuelve con una conexión nueva.
+
+## Privacidad
+
+- **Lo que hablas con tus agentes no lo puede leer DotPulse.** Va cifrado de extremo a extremo
+  entre tu teléfono y tu Hermes; el servicio de conexión solo lo reenvía.
+- **El servicio guarda lo mínimo:** un identificador aleatorio de tu instalación, el nombre que le
+  pusiste, claves públicas y, de cada conexión, los nombres del teléfono y del Hermes, cuándo se
+  creó y su última actividad. No guarda conversaciones, archivos, tokens ni tu dirección IP.
+- **No se usa ningún identificador de tu teléfono** (ni IMEI ni identificadores de Apple). El
+  Pairing ID es temporal y el servicio ni siquiera lo recibe: solo un resumen irreversible.
+- **Puedes borrarlo todo:** en DotPulse, Ajustes → Conexiones → «Borrar mis datos del servicio de
+  conexión» revoca tus conexiones y elimina tu instalación del servicio en el momento.
+- **La conexión básica no necesita suscripción**, y DotPulse no ejecuta ni paga tus modelos: tus
+  agentes corren en tu Hermes.
 
 ## Seguridad
 
