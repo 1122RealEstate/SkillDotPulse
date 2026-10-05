@@ -8,7 +8,7 @@ as they are: they are in the user's language already.
 
 | Situation | What appears | What to do |
 |---|---|---|
-| The connector is not installed | The agent has no `dotpulse_pair` tool and `/dotpulse` does not exist | Install DotPulseConnector once (see the README). The pasted Pairing ID was not spent; copy a new connection afterwards |
+| The connector is not installed | The agent has no `dotpulse_pair` tool and `/dotpulse` does not exist | Install DotPulseConnector once (the command is in SKILL.md, "Official connector"). The pasted Pairing ID was not spent; copy a new connection afterwards |
 | The connector is too old or too new | Hermes: «Este conector de DotPulse (versión …) ya no es compatible con el servicio de DotPulse. Actualízalo y genera una conexión nueva. El Pairing ID no se ha usado.» | Update the connector, restart Hermes, copy a new connection |
 | DotPulse Link cannot be reached from Hermes | Hermes: «No pude contactar con DotPulse. Comprueba la conexión a Internet de este Hermes y genera un Pairing ID nuevo.» | Check that the Hermes machine has Internet access. The Pairing ID was not spent |
 | The connector has no service to talk to | Hermes: «Este Hermes todavía no tiene configurado el servicio DotPulse Link, así que no puede conectarse con DotPulse.» | Only a connector older than 0.4.0, or one pointed elsewhere on purpose. Update it |

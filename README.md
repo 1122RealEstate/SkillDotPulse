@@ -13,11 +13,9 @@
 
 ---
 
-> [!WARNING]
-> **Todavía no se puede conectar siguiendo este README.** La arquitectura de producción está
-> definida y construida, pero dos piezas aún no están en línea: DotPulse Link
-> (`link.dotpulse.app`) está pendiente de desplegar y DotPulseConnector aún no tiene repositorio
-> público. Mira [Estado actual](#estado-actual) antes de intentarlo.
+> [!NOTE]
+> **DotPulse Link y DotPulseConnector ya están en línea.** Lo que falta para usarlo es la app:
+> DotPulse todavía no está en el App Store. Mira [Estado actual](#estado-actual).
 
 ## ¿Qué es DotPulse?
 
@@ -79,10 +77,31 @@ Solo hace conexiones **salientes** hacia `link.dotpulse.app`. No abre ningún pu
 Le da a Hermes tres herramientas (`dotpulse_pair`, `dotpulse_status`, `dotpulse_disconnect`) y una
 orden para ti, `/dotpulse`.
 
-> [!WARNING]
-> **El Connector todavía no es público.** No hay repositorio ni orden de instalación que dar hoy.
-> Cuando exista, aquí aparecerán su repositorio y el commit exacto de cada versión. Hasta entonces,
-> cualquier «conector de DotPulse» que encuentres no es oficial.
+### Instalarlo
+
+Una vez por cada Hermes, en el equipo donde corre:
+
+```bash
+hermes plugins install 1122RealEstate/DotPulseConnector --ref 80c3b17e8f90d803f390275624817f7029beb950 --enable
+hermes gateway restart
+```
+
+| | |
+|---|---|
+| Repositorio oficial | [1122RealEstate/DotPulseConnector](https://github.com/1122RealEstate/DotPulseConnector) |
+| Versión | 0.4.0 |
+| Commit | `80c3b17e8f90d803f390275624817f7029beb950` |
+| Hermes mínimo | 0.21 (probado con 0.21.2) |
+
+Hermes analiza el plugin antes de instalarlo y avisa de que declara dos dependencias, `aiohttp` y
+`cryptography`, que Hermes ya trae. `--ref` fija el commit exacto: es la comprobación de
+integridad. Después puedes comparar la copia instalada con su manifiesto:
+
+```bash
+python3 ~/.hermes/plugins/dotpulse/verify.py      # ok: 9 archivos coinciden con el manifiesto
+```
+
+Cualquier otro repositorio u otro commit ofrecido como «conector de DotPulse» no es oficial.
 
 ## ¿Qué es Link?
 
@@ -96,9 +115,10 @@ No ejecuta IA ni agentes y no guarda conversaciones, prompts, respuestas ni arch
 
 ## Primera conexión
 
-La primera vez que usas DotPulse con un Hermes hay un paso más: instalar el Connector, **una sola
-vez**, con la orden de plugins del propio Hermes, y reiniciarlo. Hermes no instala plugins por
-recibir un mensaje y su agente no tiene herramienta para hacerlo.
+La primera vez que usas DotPulse con un Hermes hay un paso más: [instalar el Connector](#instalarlo),
+**una sola vez**, con la orden de plugins del propio Hermes, y reiniciarlo. Hermes no instala
+plugins por recibir un mensaje y su agente no tiene herramienta para hacerlo. Si pegaste una
+conexión antes de instalarlo, no se gastó: copia una nueva después.
 
 Después:
 
@@ -180,7 +200,7 @@ El modelo completo, con lo que queda sin cubrir: [references/security.md](refere
 
 | Situación | Qué hacer |
 |---|---|
-| Hermes no reconoce la conexión o `/dotpulse` no existe | Falta instalar el Connector. Tu Pairing ID no se gastó |
+| Hermes no reconoce la conexión o `/dotpulse` no existe | Falta [instalar el Connector](#instalarlo). Tu Pairing ID no se gastó |
 | «…ya no es compatible con el servicio de DotPulse» | Actualiza el Connector, reinicia Hermes y copia una conexión nueva |
 | «No pude contactar con DotPulse» | Revisa la conexión a Internet del equipo de Hermes y copia una conexión nueva |
 | «Ese Pairing ID ha caducado» / «no es válido o ya se usó» | Copia una conexión nueva y pégala antes de 5 minutos |
@@ -197,15 +217,16 @@ A 5 de octubre de 2026. «Probado» quiere decir ejecutado de verdad, no solo es
 
 | Qué | Estado |
 |---|---|
-| Emparejar, usar Hermes por el enlace cifrado, reconectar y revocar | Probado en una sola máquina: servicio, Connector y `hermes serve` 0.21.2 reales, con el código Swift de la app |
-| Pruebas hostiles (Pairing ID robado, reutilizado o caducado, Hermes o teléfono falsos, repetición, fuerza bruta, servicio comprometido) | Probado: pruebas automáticas |
+| DotPulse Link en `https://link.dotpulse.app` | **En línea.** HTTPS con certificado válido, WSS, y `/health` y `/ready` respondiendo |
+| Emparejar, usar Hermes por el enlace cifrado, reconectar y revocar, contra el Link de producción | Probado: el Connector instalado desde GitHub, cargado y manejado por Hermes 0.21.2, con su `hermes serve` real. El teléfono fue un sustituto de pruebas que habla el mismo protocolo que la app |
+| La conexión sobrevive a un reinicio del servicio | Probado en producción: tras reiniciar el contenedor la conexión seguía guardada y el Connector se reconectó solo |
+| Una conexión revocada no vuelve | Probado en producción: el servicio la rechaza (403) y el Connector destruye su credencial |
+| Instalar el Connector con `hermes plugins install --ref` desde GitHub | Probado con Hermes 0.21.2 |
 | El Connector comprueba servicio y versión antes de gastar un Pairing ID | Probado: pruebas automáticas |
-| Instalar el Connector con `hermes plugins install --ref` | Probado desde un repositorio local |
+| Pruebas hostiles (Pairing ID robado, reutilizado o caducado, Hermes o teléfono falsos, repetición, fuerza bruta, servicio comprometido) | Probado: pruebas automáticas |
 | Instalar esta Skill desde GitHub | Probado con Hermes 0.21.2 |
-| La app en Release, fija en `https://link.dotpulse.app` y sin permiso de red local | Compila; sin probar contra el servicio real |
-| **DotPulse Link en `link.dotpulse.app`** | **Sin desplegar.** El servicio y su contenedor están hechos; falta ponerlo en línea |
-| **Repositorio público de DotPulseConnector** | **No existe todavía** |
-| Conectar entre redes distintas (datos móviles ↔ otra red) | **Sin probar.** Necesita Link en línea |
+| **La app DotPulse en el App Store** | **Todavía no está publicada** |
+| iPhone real con datos móviles ↔ Hermes en otra red | **Sin probar.** Las pruebas anteriores se hicieron con los dos extremos en la misma máquina |
 | Telegram real | **Sin probar.** Probado sin red contra la librería de Telegram |
 | Un modelo decidiendo llamar a las herramientas | **Sin probar.** Las herramientas se llamaron directamente |
 | Aviso push de una solicitud de conexión | **No existe.** La solicitud aparece con DotPulse abierto |

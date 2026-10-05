@@ -172,9 +172,17 @@ There is no Pairing ID to present, and nothing the agent can do makes a connecti
 `dotpulse_pair` is not among the agent's tools.
 
 > **Agent**
-> El conector de DotPulse no está instalado en este Hermes, así que no puedo conectarlo.
+> DotPulse necesita instalar su Connector oficial una sola vez en este Hermes. No he usado tu
+> Pairing ID. En el equipo donde corre Hermes, ejecuta:
+>
+> ```
+> hermes plugins install 1122RealEstate/DotPulseConnector --ref 80c3b17e8f90d803f390275624817f7029beb950 --enable
+> hermes gateway restart
+> ```
+>
+> Después copia una conexión nueva en DotPulse y pégala aquí: la que enviaste habrá caducado.
 
-Nothing else is tried.
+Nothing else is tried: no tool is called with the Pairing ID and nothing is installed by the agent.
 
 ## 13. DotPulse Link cannot be reached
 

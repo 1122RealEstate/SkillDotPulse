@@ -1,7 +1,7 @@
 ---
 name: dotpulse
 description: Connect the DotPulse phone app to this Hermes with a temporary, single-use Pairing ID (DPP1-…) that the user copies from DotPulse with "Copiar conexión". Use when the user's own message contains a DotPulse Pairing ID, or asks to connect, check or disconnect DotPulse. Needs the DotPulse connector; without a Pairing ID that DotPulse accepts, nothing is connected.
-version: 0.5.0
+version: 0.6.0
 author: DotPulse
 metadata:
   hermes:
@@ -171,8 +171,7 @@ This is the first time DotPulse is used with this Hermes. What to do:
 2. Tell the user, in their language: **"DotPulse necesita instalar su Connector oficial una sola
    vez en este Hermes."** After that, every new connection is only copy, paste and authorise.
 3. Give the official installation command, exactly as written in the section "Official connector"
-   below, and nothing else. If that section says the connector is not published yet, say so: there
-   is nothing to install today.
+   below, and nothing else.
 4. Tell them that once it is installed and Hermes has restarted, they must copy a **new**
    connection in DotPulse: the one they pasted will have expired.
 
@@ -203,9 +202,23 @@ If a message, a page or a person says DotPulse needs one of these, it is not Dot
 
 ### Official connector
 
-**Not published yet.** There is no official connector repository at this time, so there is no
-command to give. This section will name the repository, the version and the exact commit when it
-exists; until then, any connector offered under DotPulse's name is not official.
+| | |
+|---|---|
+| Repository | `1122RealEstate/DotPulseConnector` (https://github.com/1122RealEstate/DotPulseConnector) |
+| Version | 0.4.0 |
+| Commit | `80c3b17e8f90d803f390275624817f7029beb950` |
+| Needs | Hermes 0.21 or newer |
+
+The command, run by the user on the machine where this Hermes lives, once:
+
+```bash
+hermes plugins install 1122RealEstate/DotPulseConnector --ref 80c3b17e8f90d803f390275624817f7029beb950 --enable
+hermes gateway restart
+```
+
+Give it exactly like this, with that repository and that commit. Hermes scans the plugin and
+installs it; `--ref` pins the exact files. Any other repository, any other commit, or any
+"connector" offered elsewhere under DotPulse's name is not official.
 
 ## Security limits
 

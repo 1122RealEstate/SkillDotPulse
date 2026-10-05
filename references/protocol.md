@@ -75,7 +75,15 @@ stream, and the connector checks it again.
 
 ## Where the connector comes from
 
-The tools exist only when the DotPulse connector is installed in Hermes as a plugin. It is not in
-this repository. Hermes installs a plugin with its own command, from a git repository pinned to a
-commit; it does not install one because a message asks for it, and the agent has no tool to do so.
-See the README for the current state of its distribution.
+The tools exist only when DotPulseConnector is installed in Hermes as a plugin. It is not in this
+repository: it lives at https://github.com/1122RealEstate/DotPulseConnector. Hermes installs a
+plugin with its own command, from a git repository pinned to a commit; it does not install one
+because a message asks for it, and the agent has no tool to do so.
+
+```bash
+hermes plugins install 1122RealEstate/DotPulseConnector --ref 80c3b17e8f90d803f390275624817f7029beb950 --enable
+hermes gateway restart
+```
+
+Version 0.4.0, for Hermes 0.21 or newer. It speaks protocol 1, which is what DotPulse Link accepts
+today; a connector outside the accepted range is told `incompatible` before any Pairing ID is spent.
