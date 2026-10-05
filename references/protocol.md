@@ -1,0 +1,64 @@
+# What the tools do underneath
+
+This file describes behaviour, not an API. The addresses, routes and message formats between the
+connector, the app and the Link service are private to DotPulse and are not in this repository.
+
+## Roles
+
+```
+DotPulse app            Link service              DotPulse connector (in Hermes)        Agent + this skill
+────────────            ────────────              ──────────────────────────────        ──────────────────
+issues a Pairing ID ──► remembers its hash
+                                                  ◄── dotpulse_pair(text) ───────────── user pasted it
+                        claims it, once      ◄──  presents the hash + its public key
+request + code     ◄──                            returns device name + code ─────────► shown to the user
+owner taps Autorizar ─► authorized
+                        hands over the      ──►   stores the connection's credential
+                        connection credential     (private file) and connects out
+                        connected            ◄══  outbound connection, kept up
+app's traffic      ═══► relays, sealed       ══►  the local Hermes API
+```
+
+The agent only ever sees the right-hand column.
+
+## Operations
+
+| What happens | Who does it | How the agent sees it |
+|---|---|---|
+| Present the Pairing ID (redeem) | Connector, when `dotpulse_pair` is called | `state` and, on `pending`, `device`, `verification_code`, `request` |
+| Approve or reject | The owner, in the app. Nobody else can | Later, through `dotpulse_status(request)` |
+| Collect the credential and connect (start) | Connector, by itself, once the owner approves | Nothing to do |
+| Status and capabilities | Connector asks the service | `dotpulse_status` |
+| Revoke | The owner in the app, or `dotpulse_disconnect` | The connection becomes `revoked` |
+
+There is no operation that creates, extends or transfers a Pairing ID or a connection, and none
+that reaches `connected` without the owner's approval. The service enforces the order; an
+out-of-order request is refused whoever sends it.
+
+## The connection
+
+- The connector dials **out** to the Link service and keeps that connection up: heartbeat,
+  reconnection with backoff, and the same credential after a restart. Nothing listens on the Hermes
+  machine and no port is opened. Telegram is not involved in keeping it up.
+- The credential that keeps it up is created when the owner approves. It is not the Pairing ID and
+  is not derived from it. It can be rotated and revoked.
+- What travels between the app and Hermes is encrypted end to end between those two. The service
+  relays it and cannot read it.
+- Revoking cuts both ends at once. The connector then deletes its credential and does not retry.
+
+## Capabilities
+
+A connection carries only the capabilities it was granted, and those are the ones the owner saw on
+the authorisation screen. `dotpulse_status` lists them per connection.
+
+| Capability | What it allows |
+|---|---|
+| `hermes.api` | The DotPulse app can use this Hermes: conversations, Dots, tasks and voice |
+
+This is the only capability that exists today. The service checks it every time the app opens a
+stream, and the connector checks it again.
+
+## Where the connector comes from
+
+The tools exist only when the DotPulse connector is installed in Hermes as a plugin. It is not in
+this repository. See the README for the current state of its distribution.
