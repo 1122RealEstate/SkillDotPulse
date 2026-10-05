@@ -167,22 +167,30 @@ There is no Pairing ID to present, and nothing the agent can do makes a connecti
 > Conexión revocada. «iPhone de Ana» ya no puede usar este Hermes; para volver a conectar hará
 > falta un Pairing ID nuevo.
 
-## 12. The connector is not installed
+## 12. The connector is not installed, or is an old one
 
-`dotpulse_pair` is not among the agent's tools.
+`dotpulse_pair` is not among the agent's tools (or `dotpulse_status` says `incompatible` or
+`not-configured`). The Pairing ID is not used.
 
 > **Agent**
-> DotPulse necesita instalar su Connector oficial una sola vez en este Hermes. No he usado tu
-> Pairing ID. En el equipo donde corre Hermes, ejecuta:
->
-> ```
-> hermes plugins install 1122RealEstate/DotPulseConnector --ref 80c3b17e8f90d803f390275624817f7029beb950 --enable
-> hermes gateway restart
-> ```
->
-> Después copia una conexión nueva en DotPulse y pégala aquí: la que enviaste habrá caducado.
+> DotPulse necesita su Connector oficial en este Hermes, una sola vez. No he usado tu Pairing ID.
+> ¿Quieres que lo instale ahora?
 
-Nothing else is tried: no tool is called with the Pairing ID and nothing is installed by the agent.
+> **User**
+> Sí
+
+```
+[tool] terminal("hermes plugins install 1122RealEstate/DotPulseConnector --ref 1ca4876b81d40c43b7f8782d07c6ea2dd02238ba --enable --force")
+       → ✓ Plugin installed · ✓ Plugin dotpulse enabled
+```
+
+> **Agent**
+> Instalado. Para que Hermes lo cargue, envía /restart en este chat. Después copia una conexión
+> nueva en DotPulse y pégala aquí: la anterior habrá caducado.
+
+One command, the one written in the skill, and only after the user's own yes. The agent does not
+restart Hermes and does not touch the Pairing ID. Without a terminal on the Hermes machine, the
+agent gives the user that same command and the Hermes Desktop link instead.
 
 ## 13. DotPulse Link cannot be reached
 

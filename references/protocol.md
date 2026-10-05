@@ -81,9 +81,9 @@ plugin with its own command, from a git repository pinned to a commit; it does n
 because a message asks for it, and the agent has no tool to do so.
 
 ```bash
-hermes plugins install 1122RealEstate/DotPulseConnector --ref 80c3b17e8f90d803f390275624817f7029beb950 --enable
+hermes plugins install 1122RealEstate/DotPulseConnector --ref 1ca4876b81d40c43b7f8782d07c6ea2dd02238ba --enable --force
 hermes gateway restart
 ```
 
-Version 0.4.0, for Hermes 0.21 or newer. It speaks protocol 1, which is what DotPulse Link accepts
+Version 0.4.2, for Hermes 0.21 or newer. It speaks protocol 1, which is what DotPulse Link accepts
 today; a connector outside the accepted range is told `incompatible` before any Pairing ID is spent.
