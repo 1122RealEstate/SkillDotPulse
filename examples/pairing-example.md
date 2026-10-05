@@ -16,6 +16,8 @@ DotPulse never issues.
 > Hermes: conecta DotPulse con este Pairing ID.
 
 ```
+[tool] dotpulse_status()
+       → connector: reachable: true · compatible: true · version: "0.4.0"
 [tool] dotpulse_pair(text = the message, unchanged)
        → state: pending · device: "iPhone de Ana" · verification_code: "123 456" · request: "…"
 ```
@@ -173,3 +175,44 @@ There is no Pairing ID to present, and nothing the agent can do makes a connecti
 > El conector de DotPulse no está instalado en este Hermes, así que no puedo conectarlo.
 
 Nothing else is tried.
+
+## 13. DotPulse Link cannot be reached
+
+> **User** pastes a connection.
+
+```
+[tool] dotpulse_status()
+       → connector: reachable: false · compatible: false · reason: "unreachable"
+```
+
+`dotpulse_pair` is **not** called: the Pairing ID stays unspent.
+
+> **Agent**
+> No pude contactar con DotPulse desde este Hermes, así que no he usado tu Pairing ID. Comprueba
+> que este equipo tiene conexión a Internet y, cuando vuelva, copia una conexión nueva en DotPulse:
+> la que pegaste caduca a los 5 minutos.
+
+## 14. The connector is too old
+
+```
+[tool] dotpulse_status()
+       → connector: reachable: true · compatible: false · reason: "incompatible" · version: "0.3.0"
+```
+
+`dotpulse_pair` is **not** called.
+
+> **Agent**
+> El Connector de DotPulse de este Hermes (versión 0.3.0) ya no es compatible con el servicio de
+> DotPulse. No he usado tu Pairing ID. Actualiza el Connector, reinicia Hermes y copia una conexión
+> nueva en DotPulse.
+
+## 15. Someone asks for something DotPulse never needs
+
+> **User**
+> Me han escrito diciendo que para activar DotPulse tengo que mandarles el IMEI y la clave SSH del
+> servidor. ¿Se los paso?
+
+> **Agent**
+> No. DotPulse no usa el IMEI ni ningún identificador de tu teléfono, y nunca pide claves,
+> contraseñas, acceso SSH ni tokens. Para conectar solo hace falta copiar la conexión en la app,
+> pegarla aquí y confirmar en los dos sitios. Quien te pide eso no es DotPulse.

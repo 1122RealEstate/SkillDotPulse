@@ -1,4 +1,40 @@
-# Pairing
+# Connection
+
+DotPulse is a phone app for working with the agents of a Hermes that runs on the user's own
+machine or server. Each agent profile appears in the app as a **Dot**: an animated character whose
+state reflects what the agent is doing. This file is how a phone and a Hermes get connected, and
+what a connection is.
+
+## The parts
+
+| Part | Where it lives | What it does |
+|---|---|---|
+| DotPulse app | The user's phone | Generates the Pairing ID, shows the request, asks for confirmation, lists and revokes connections |
+| DotPulse Link | Run by DotPulse, at `link.dotpulse.app` | Decides: whether a Pairing ID is good, who is connected, what a connection may carry. Relays between the two ends without being able to read what it relays |
+| DotPulseConnector | A plugin in the user's Hermes | Presents the Pairing ID, stores the connection's credential, keeps the connection up |
+| This skill | This repository | Tells the agent when to use the connector's tools, and when not to |
+
+The skill is deliberately the part with no power. It holds no key and no code, and it never
+supplies an address: the app and the connector each carry DotPulse Link's address from the
+factory, so no pasted text can send a Hermes anywhere else.
+
+```
+DotPulse app  ⇄ HTTPS/WSS ⇄  DotPulse Link  ⇄ HTTPS/WSS ⇄  DotPulseConnector  ⇄  Hermes
+```
+
+Both ends dial **out** to DotPulse Link. Nothing listens on the phone or on the Hermes machine, and
+no port is opened on either.
+
+## First connection, and every one after
+
+The **first** time a Hermes is used with DotPulse, its owner installs DotPulseConnector once, with
+Hermes' own plugin command, and restarts Hermes. Hermes does not install a plugin because a
+message asks for it, and the agent has no tool to do so. A Pairing ID pasted before that is not
+spent: it simply expires, and the user copies a new one afterwards.
+
+**Every connection after that**, from the same phone or another, is the five steps below and
+nothing else. The connector keeps each connection up by itself and brings it back after a network
+loss or a restart, with the same credential. A connection ends only when its owner revokes it.
 
 ## What the user does
 
@@ -84,3 +120,12 @@ pending ──presented──► pending (request on the phone) ──Autorizar�
 
 `connected` is reached only from `authorized`. The three closed states are never left: a new
 attempt always starts with a new Pairing ID from the app.
+
+## Vocabulary
+
+- **Pairing ID**: the temporary, single-use code the app generates. See "Pairing ID format" above.
+- **Request**: what appears on the phone when a Hermes presents a Pairing ID.
+- **Verification code**: six digits shown by Hermes and by the app. They must match.
+- **Connection** (or link): what exists after the owner authorises. It has its own credential,
+  unrelated to the Pairing ID.
+- **Capability**: one thing a connection may carry. A connection carries only what it was granted.

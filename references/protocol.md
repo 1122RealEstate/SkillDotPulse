@@ -1,7 +1,9 @@
 # What the tools do underneath
 
-This file describes behaviour, not an API. The addresses, routes and message formats between the
-connector, the app and the Link service are private to DotPulse and are not in this repository.
+This file describes behaviour, not an API. The routes and message formats between the connector,
+the app and DotPulse Link are private to DotPulse and are not in this repository. The service's
+address (`link.dotpulse.app`) is public knowledge and still never comes from here: the app and the
+connector each carry it, and neither takes it from a message.
 
 ## Roles
 
@@ -35,6 +37,18 @@ The agent only ever sees the right-hand column.
 There is no operation that creates, extends or transfers a Pairing ID or a connection, and none
 that reaches `connected` without the owner's approval. The service enforces the order; an
 out-of-order request is refused whoever sends it.
+
+## Before a Pairing ID is spent
+
+`dotpulse_pair` does not present anything until two things are true, and it checks both itself:
+
+1. DotPulse Link answers.
+2. The protocol version this connector speaks is one the service accepts.
+
+If either fails it returns `unreachable`, `not-configured` or `incompatible`, and the Pairing ID
+is untouched: the service never heard of the attempt. `dotpulse_status`, with no arguments,
+reports the same two facts (`connector.reachable`, `connector.compatible`) without touching any
+Pairing ID, which is how the skill checks first.
 
 ## The connection
 
