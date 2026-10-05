@@ -1,7 +1,7 @@
 ---
 name: dotpulse
 description: Connect the DotPulse phone app to this Hermes with a temporary, single-use Pairing ID (DPP1-…) that the user copies from DotPulse with "Copiar conexión". Use when the user's own message contains a DotPulse Pairing ID, or asks to connect, check or disconnect DotPulse. Needs the DotPulse connector; without a Pairing ID that DotPulse accepts, nothing is connected.
-version: 0.2.0
+version: 0.3.0
 author: DotPulse
 metadata:
   hermes:
@@ -13,7 +13,7 @@ metadata:
 # DotPulse Skill
 
 Connects the DotPulse app on the user's phone to this Hermes. The user copies a short text in the
-app ("Copiar conexión"), pastes it here, and confirms on the phone.
+app ("Copiar conexión"), pastes it here, and confirms twice: on the phone, and here.
 
 This skill is instructions only. The work is done by the **DotPulse connector**, a Hermes plugin
 that provides three tools and one command. If those tools are not in your tool list, the connector
@@ -25,15 +25,18 @@ is not installed: say so and stop (see "If the connector is missing").
 | `dotpulse_status(request?)` | Lists the phones connected to this Hermes, the state of each connection and the capabilities each was granted. With `request`, says how a pending request ended. |
 | `dotpulse_disconnect(connection)` | Revokes one connection. |
 
-The user can do the same without you through the command `/dotpulse`.
+The user has a command, `/dotpulse`, that you do not: `/dotpulse` lists connections,
+`/dotpulse confirmar` and `/dotpulse rechazar` answer a connection request, and
+`/dotpulse desconectar <id>` revokes one. Confirming is theirs alone: there is no tool for it.
 
 ## The rule that overrides everything else
 
 **You decide nothing. DotPulse decides.**
 
 Whether a Pairing ID is good, whether a phone may connect, and what a connection may carry are
-answered by DotPulse's service and by the user pressing *Autorizar* in the app. You cannot approve
-a request, and nothing you say or do makes one approved. Never tell the user DotPulse is connected
+answered by DotPulse's service and by the user: pressing *Autorizar* in the app, and typing
+`/dotpulse confirmar` here. You cannot give either answer, and nothing you say or do stands in for
+one. Never type, suggest running, or try to trigger `/dotpulse confirmar` yourself. Never tell the user DotPulse is connected
 unless `dotpulse_status` says `connected`.
 
 A Pairing ID that looks valid is exactly as untrusted as one that does not, until DotPulse answers.
@@ -74,12 +77,16 @@ DotPulse checks the rest.
 2. **Read `state`** and act on it (table below). Use the `message` the tool returns: it is the
    wording DotPulse wants the user to see.
 3. **On `pending`**: show the user the phone's name (`device`) and the `verification_code` exactly
-   as given, and tell them to open DotPulse, check that it shows the same code, and press
-   *Autorizar* there (or *Rechazar* if it does not match or they did not expect it). They have
-   2 minutes. Keep the `request` value for step 4.
-4. **Do not wait and do not poll.** The connector finishes the connection by itself once the user
-   answers on the phone. If the user later asks whether it worked, call `dotpulse_status` with
-   that `request`.
+   as given, and tell them that two confirmations are needed, both theirs, within 2 minutes:
+   - in DotPulse, where the request must show the same code: press *Autorizar*;
+   - here: type `/dotpulse confirmar`, only if that phone is their own.
+
+   If their own DotPulse is not showing that code right now, they must type `/dotpulse rechazar`
+   instead: someone is trying to connect a different phone to this Hermes. Say this plainly.
+   Keep the `request` value for step 4.
+4. **Do not wait and do not poll.** The connector finishes the connection by itself once both
+   answers are in. If the user later asks whether it worked, call `dotpulse_status` with that
+   `request`.
 
 Never repeat the Pairing ID in your reply, and never store it: not in memory, notes, files,
 session titles or summaries.
@@ -88,8 +95,8 @@ session titles or summaries.
 
 | `state` | Meaning | What you do |
 |---|---|---|
-| `pending` | DotPulse accepted the Pairing ID. A request is waiting on the phone. | Show device name and verification code. Tell the user to confirm in the app. |
-| `authorized` | The user pressed *Autorizar*; the connector is collecting its credential. | Nothing. It becomes `connected` on its own. |
+| `pending` | DotPulse accepted the Pairing ID. A request is waiting on the phone. | Show device name and verification code. Tell the user to confirm in the app and here. |
+| `authorized` | The user pressed *Autorizar* on the phone. Still waiting for `/dotpulse confirmar` here, or collecting the credential. | Remind them of `/dotpulse confirmar` if they ask. It becomes `connected` on its own. |
 | `connected` | The connection exists and DotPulse keeps it up. | Say so. |
 | `expired` | The Pairing ID, or the request, ran out of time. | Ask for a new one from the app. |
 | `rejected` | Not valid, already used, or cancelled. | Ask for a new one from the app. |
@@ -109,7 +116,8 @@ Other values `dotpulse_pair` can return, none of which contacted DotPulse succes
 | `unverified` | The phone behind that Pairing ID could not prove it holds it. Nothing was connected. |
 
 After the user answers, `dotpulse_status(request)` reports `connected`, `owner-rejected`
-(they pressed *Rechazar*), `unanswered` (nobody confirmed in time), `revoked` or `failed`.
+(they pressed *Rechazar* on the phone), `hermes-rejected` (they typed `/dotpulse rechazar`),
+`unanswered` (a confirmation was missing when time ran out), `revoked` or `failed`.
 
 Anything you do not recognise: treat it as not connected, and say so.
 
@@ -139,7 +147,8 @@ keys or tokens. This skill never needs them.
 - You cannot create, extend, renew or transfer a Pairing ID or a connection.
 - The Pairing ID is never repeated, stored or sent to anything but `dotpulse_pair`.
 - A Pairing ID must come from the user's own phone. If someone else sent it to them, pairing would
-  connect that other person's phone: say this once when you show the verification code.
+  connect that other person's phone. That is what the confirmation here is for, and why you must
+  never give it: say so when you show the verification code.
 - These rules are a second line of defence. DotPulse enforces expiry, single use, confirmation
   and revocation whether or not you follow them.
 
@@ -150,6 +159,7 @@ Before ending the turn:
 - The Pairing ID, whole or in part, is not in your reply, notes or memory.
 - You called `dotpulse_pair` at most once for it.
 - You did not say "connected" unless `dotpulse_status` said so.
+- You did not confirm, or try to confirm, a request on the user's behalf.
 
 ## Reference
 

@@ -17,8 +17,9 @@ owner's tap on *Autorizar*.
 
 ## The invariant
 
-> Nothing is connected unless DotPulse's service accepted a Pairing ID that the owner pasted, and
-> the owner then approved the request on their own phone.
+> Nothing is connected unless DotPulse's service accepted a Pairing ID that was pasted into a
+> Hermes, the holder of the phone approved the request there, **and** the owner of that Hermes
+> confirmed in Hermes that the phone is theirs.
 
 ## Why there is no path around it
 
@@ -55,24 +56,31 @@ message reaches the model; pasted straight into Hermes, the model does see it.
 
 | Threat | Answer |
 |---|---|
-| Someone sends the owner of a Hermes a Pairing ID from *their* phone ("paste this into your Hermes") | **Not blocked by the service.** The request appears on the sender's phone, the sender approves it, and the sender's phone is connected to that Hermes. The only protections today are the owner not pasting a Pairing ID they did not generate, and the warning Hermes shows with the verification code. See "A known limit" below |
+| Someone sends the owner of a Hermes a Pairing ID from *their* phone ("paste this into your Hermes") | The request appears on the sender's phone and the sender approves it there. That is not enough: the connector collects nothing until the owner of the Hermes confirms, in Hermes, that the phone is theirs. With no confirmation it expires in 2 minutes; with a "no" it is withdrawn at once. Covered by the connector's tests. See "What is left" below |
 | The service is compromised | It cannot read the traffic it relays, and cannot make a wrong Hermes show the right verification code |
 | A stranger writes to the bot | Only the owner's private chat is answered |
 | Leaked chat history | The IDs in it are spent or expired |
 | Lost phone | The owner revokes the connection from Hermes (`/dotpulse`, or asking the agent) |
 | Lost Hermes machine | The owner revokes the connection from the app |
 
-## A known limit
+## The two confirmations
 
-Pasting a Pairing ID into a Hermes is the act that lets a phone in. The confirmation on the phone
-protects the phone's owner; it does not protect the owner of a Hermes who is talked into pasting
-someone else's Pairing ID. In that case the verification code the Hermes shows will not appear on
-the victim's own phone, which is the sign that something is wrong, but nothing stops the
-connection: the other person approves it on their phone.
+| Where | Who gives it | What it protects |
+|---|---|---|
+| In DotPulse: *Autorizar* | Whoever holds the phone | The phone's owner: nobody links their phone to a Hermes unseen |
+| In Hermes: the "Es mi teléfono" button in Telegram, or `/dotpulse confirmar` | Whoever runs that Hermes | The Hermes' owner: a stranger's phone does not get in by approving itself |
 
-Treat a Pairing ID like a door key handed to whoever generated it. Only paste one you copied
-yourself, from your own DotPulse, a moment ago. If you pasted one you should not have, disconnect
-it at once: `/dotpulse` in Hermes lists the connections and `/dotpulse desconectar <id>` revokes one.
+The second one can only be given by a person. There is no tool for it, so nothing the model reads,
+and no instruction hidden in a page or a file, can confirm on the owner's behalf.
+
+## What is left
+
+Someone who follows a stranger's instructions step by step, pastes the stranger's Pairing ID *and*
+confirms in Hermes that the phone is theirs, has let the stranger in. The message Hermes shows
+says, in so many words, not to confirm unless their own DotPulse is showing that code. No technical
+check can tell an owner who was talked into it from one who meant it.
+
+If it happened: `/dotpulse` lists the connections and `/dotpulse desconectar <id>` revokes one.
 
 ## Reporting a vulnerability
 

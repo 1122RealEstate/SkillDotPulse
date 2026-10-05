@@ -25,12 +25,17 @@ DotPulse never issues.
 >
 > Código de verificación: 123 456
 >
-> Abre DotPulse: verás esta solicitud con el mismo código. Si coincide, pulsa Autorizar allí. Si
-> no coincide o no la esperabas, pulsa Rechazar. Caduca en 2 minutos.
+> Hacen falta dos confirmaciones, y tienes 2 minutos:
+> 1. En DotPulse, en tu teléfono: verás esta solicitud con el mismo código. Pulsa Autorizar.
+> 2. Aquí: confirma que ese teléfono es el tuyo escribiendo /dotpulse confirmar (o /dotpulse
+>    rechazar si no lo es).
 >
-> Recuerda: el Pairing ID tiene que haber salido de tu propio teléfono.
+> Si tu propio DotPulse no está mostrando este código ahora mismo, no confirmes: alguien está
+> intentando conectar su teléfono a tu Hermes.
 
-The user taps *Autorizar* in the app. The connector finishes on its own. Later:
+The user taps *Autorizar* in the app and types `/dotpulse confirmar`. The connector answers
+"Confirmado aquí. En cuanto pulses Autorizar en DotPulse, «iPhone de Ana» quedará conectado." and
+finishes on its own. Later:
 
 > **User**
 > ¿Quedó conectado?

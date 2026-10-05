@@ -26,8 +26,9 @@ The agent only ever sees the right-hand column.
 | What happens | Who does it | How the agent sees it |
 |---|---|---|
 | Present the Pairing ID (redeem) | Connector, when `dotpulse_pair` is called | `state` and, on `pending`, `device`, `verification_code`, `request` |
-| Approve or reject | The owner, in the app. Nobody else can | Later, through `dotpulse_status(request)` |
-| Collect the credential and connect (start) | Connector, by itself, once the owner approves | Nothing to do |
+| Approve or reject on the phone | Whoever holds the phone, in the app | Later, through `dotpulse_status(request)` |
+| Confirm or reject in Hermes | The owner of the Hermes: a button in Telegram, or `/dotpulse confirmar` / `/dotpulse rechazar`. There is no tool for it | Later, through `dotpulse_status(request)` |
+| Collect the credential and connect (start) | Connector, by itself, once both answers are yes | Nothing to do |
 | Status and capabilities | Connector asks the service | `dotpulse_status` |
 | Revoke | The owner in the app, or `dotpulse_disconnect` | The connection becomes `revoked` |
 
@@ -61,4 +62,6 @@ stream, and the connector checks it again.
 ## Where the connector comes from
 
 The tools exist only when the DotPulse connector is installed in Hermes as a plugin. It is not in
-this repository. See the README for the current state of its distribution.
+this repository. Hermes installs a plugin with its own command, from a git repository pinned to a
+commit; it does not install one because a message asks for it, and the agent has no tool to do so.
+See the README for the current state of its distribution.

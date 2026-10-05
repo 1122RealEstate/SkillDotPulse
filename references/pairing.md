@@ -6,6 +6,8 @@
 2. Pastes what was copied, unchanged, into a private conversation with their Hermes.
 3. Reads the verification code Hermes shows.
 4. Goes back to DotPulse, checks that the request there shows the same code, and taps **Autorizar**.
+5. Confirms in Hermes that the phone is theirs: the **Es mi teléfono** button in Telegram, or
+   `/dotpulse confirmar` anywhere else.
 
 No server address, no password, no key, no terminal.
 
@@ -43,9 +45,12 @@ Enforced by the Link service, not by this skill, and covered by its tests:
 - **One use.** The first Hermes to present it claims it for good. Any later attempt, by anyone,
   gets `rejected`.
 - **Cancellable.** Copying a new connection cancels the previous unused one.
-- **Confirmation.** Nothing is authorised until the owner taps *Autorizar* in the app. The request
-  shows which Hermes is asking, where the text was pasted (Hermes or Telegram), when, and the code.
-- **Two minutes to answer.** An unanswered request expires.
+- **Confirmation on the phone.** Nothing is authorised until *Autorizar* is tapped in the app. The
+  request shows which Hermes is asking, where the text was pasted (Hermes or Telegram), when, and
+  the code.
+- **Confirmation in Hermes.** Enforced by the connector: it does not collect the connection's
+  credential until the owner of that Hermes confirms there too.
+- **Two minutes for each.** A request missing either answer expires.
 - **No guessing.** Repeated wrong attempts from one address are refused for a while.
 - **Never stored.** The service never receives the Pairing ID, only a one-way hash of it. The app
   keeps it in memory until the owner answers. The connector uses it once and keeps nothing.
@@ -64,7 +69,7 @@ verified and does not offer *Autorizar*.
 ## Lifecycle
 
 ```
-pending ──presented──► pending (request on the phone) ──Autorizar──► authorized ──► connected
+pending ──presented──► pending (request on the phone) ──Autorizar──► authorized ──confirmed in Hermes──► connected
    │                         │                                           │              │
    ├─ 5 min ─► expired       ├─ Rechazar ─► rejected                     └─ 2 min ─►    └─ revoke ─► revoked
    └─ cancelled ─► revoked   └─ 2 min ─► expired                            expired
@@ -74,7 +79,7 @@ pending ──presented──► pending (request on the phone) ──Autorizar�
 |---|---|---|
 | `pending` | The app issued the Pairing ID | `authorized`, `rejected`, `expired`, `revoked` |
 | `authorized` | The owner tapped *Autorizar* | `connected`, `expired`, `revoked` |
-| `connected` | The connector collected its credential and its connection came up | `revoked` |
+| `connected` | The owner confirmed in Hermes, the connector collected its credential and its connection came up | `revoked` |
 | `expired`, `rejected`, `revoked` | See above | nowhere |
 
 `connected` is reached only from `authorized`. The three closed states are never left: a new
